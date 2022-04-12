@@ -22,13 +22,14 @@ def fetch_spacex_last_launch():
 def fetch_nasa_epic_photo():
     response = requests.get('https://api.nasa.gov/EPIC/api/natural/images?api_key=DEMO_KEY')
     response.raise_for_status()
-    epic_photo = response.json()[0]
-    #https://api.nasa.gov/EPIC/archive/natural/2022/04/11/png/epic_1b_20220411005515.png?api_key=DEMO_KEY
-    #https://api.nasa.gov/EPIC/archive/natural/2022/04/11/png/epic_1b_20220411005515.png?api_key=DEMO_KEY
-    photo_date = datetime.fromisoformat(epic_photo['date'])
-    photo_uid = epic_photo['image']
-    epic_photo_url = f"https://api.nasa.gov/EPIC/archive/natural/{photo_date.year}/{photo_date.month:02d}/{photo_date.day:02d}/png/{photo_uid}.png?api_key=DEMO_KEY"
-    print(epic_photo_url)
+    #epic_photo = response.json()[0]
+    for img_number, img in enumerate(response.json()):
+        img_date = datetime.fromisoformat(img['date'])
+        epic_photo_url = f'https://api.nasa.gov/EPIC/archive/natural/' \
+                        f'{img_date.year}/{img_date.month:02d}/{img_date.day:02d}' \
+                        f'/png/{img["image"]}.png?api_key=DEMO_KEY'
+        #print(epic_photo_url)
+        download_image(epic_photo_url, Path(IMG_FOLDER_NAME) / (f'epic{img_number}.jpg'))
 
 def main():
     
