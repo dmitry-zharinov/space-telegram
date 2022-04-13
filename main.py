@@ -5,9 +5,11 @@ from urllib.parse import unquote, urlsplit
 
 import requests
 from dotenv import load_dotenv
+import telegram
 
 IMG_FOLDER_NAME = 'images'
 COUNT_APOD_IMAGES = 20
+TG_CHAT_ID = '@dw_space_photos'
 
 
 def download_image(url, path):
@@ -55,8 +57,18 @@ def fetch_nasa_APOD():
                             params=payload)
     response.raise_for_status()
     for img_number, img in enumerate(response.json()):
+        ext = get_extension_from_url(img['url'])
         download_image(img['url'],
-                       Path(IMG_FOLDER_NAME) / (f'apod{img_number}.jpg'))
+                       Path(IMG_FOLDER_NAME)
+                       / (f'apod{img_number}.{ext}'))
+
+
+def publish_photo(path):
+    bot = telegram.Bot(token=os.environ["TG_BOT_TOKEN"])
+    # bot.send_message(chat_id='@dw_space_photos',
+    #                  text='Привет всем в этом чатике!')
+    bot.send_document(chat_id=TG_CHAT_ID,
+                      document=open(path, 'rb'))
 
 
 def main():
@@ -65,6 +77,9 @@ def main():
     fetch_spacex_last_launch()
     fetch_nasa_epic_photo()
     fetch_nasa_APOD()
+    # publish_photo(os.fspath(Path(IMG_FOLDER_NAME) / 'apod1.jpg'))
+    publish_photo(os.fspath(Path(IMG_FOLDER_NAME) / 'epic1.jpg'))
+    publish_photo(os.fspath(Path(IMG_FOLDER_NAME) / 'spacex1.jpg'))
 
 
 if __name__ == '__main__':
