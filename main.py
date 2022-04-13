@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 IMG_FOLDER_NAME = 'images'
 COUNT_APOD_IMAGES = 20
 
+
 def download_image(url, path):
     response = requests.get(url)
     response.raise_for_status()
