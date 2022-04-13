@@ -1,4 +1,5 @@
 import os
+import time
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -60,13 +61,11 @@ def fetch_nasa_APOD():
         ext = get_extension_from_url(img['url'])
         download_image(img['url'],
                        Path(IMG_FOLDER_NAME)
-                       / (f'apod{img_number}.{ext}'))
+                       / (f'apod{img_number}{ext}'))
 
 
 def publish_photo(path):
-    bot = telegram.Bot(token=os.environ["TG_BOT_TOKEN"])
-    # bot.send_message(chat_id='@dw_space_photos',
-    #                  text='Привет всем в этом чатике!')
+    bot = telegram.Bot(token=os.environ['TG_BOT_TOKEN'])
     bot.send_document(chat_id=TG_CHAT_ID,
                       document=open(path, 'rb'))
 
@@ -74,12 +73,14 @@ def publish_photo(path):
 def main():
     load_dotenv()
     Path(IMG_FOLDER_NAME).mkdir(parents=True, exist_ok=True)
-    fetch_spacex_last_launch()
-    fetch_nasa_epic_photo()
-    fetch_nasa_APOD()
-    # publish_photo(os.fspath(Path(IMG_FOLDER_NAME) / 'apod1.jpg'))
-    publish_photo(os.fspath(Path(IMG_FOLDER_NAME) / 'epic1.jpg'))
-    publish_photo(os.fspath(Path(IMG_FOLDER_NAME) / 'spacex1.jpg'))
+    # fetch_spacex_last_launch()
+    # fetch_nasa_epic_photo()
+    # fetch_nasa_APOD()
+    for i in os.walk(os.fspath(Path(IMG_FOLDER_NAME))):
+        for img in i[2]:
+            # print(Path(IMG_FOLDER_NAME) / img)
+            time.sleep(int(os.environ['PHOTO_PUBLISH_PERIOD']))
+            publish_photo(os.fspath(Path(IMG_FOLDER_NAME) / img))
 
 
 if __name__ == '__main__':
