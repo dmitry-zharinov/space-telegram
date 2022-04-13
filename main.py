@@ -3,6 +3,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+import logging
 
 import requests
 from dotenv import load_dotenv
@@ -81,6 +82,10 @@ def main():
             # print(Path(IMG_FOLDER_NAME) / img)
             time.sleep(int(os.environ['PHOTO_PUBLISH_PERIOD']))
             publish_photo(os.fspath(Path(IMG_FOLDER_NAME) / img))
+            logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
+                                filename='app.log',
+                                filemode='w')
+            logging.info(f'Опубликовано фото {img}')
 
 
 if __name__ == '__main__':
