@@ -1,9 +1,10 @@
 # space-telegram
  
-Утилита загружает:
-- фотографии с последнего запуска SpaceX
-- фотографии дня [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html)
-- фотографии планеты [NASA Earth Polychromatic Imaging Camera](https://epic.gsfc.nasa.gov/)
+Утилита:
+- загружает фотографии с последнего запуска SpaceX
+- загружает фотографии дня [NASA Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html)
+- загружает фотографии планеты [NASA Earth Polychromatic Imaging Camera](https://epic.gsfc.nasa.gov/)
+- публикует в телеграм-канал (функция в разработке)
 
 ### Установка
 
