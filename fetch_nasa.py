@@ -38,8 +38,9 @@ def fetch_nasa_APOD(key):
     response.raise_for_status()
     for img_number, img in enumerate(response.json()):
         ext = get_extension_from_url(img['url'])
-        download_image(img['url'],
-                       f'apod{img_number}{ext}')
+        if ext:
+            download_image(img['url'], 
+                           f'apod{img_number}{ext}')
 
 
 def fetch_nasa(key):
