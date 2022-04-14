@@ -1,6 +1,6 @@
 import requests
 
-from download_image import download_image
+from utils import download_image
 
 
 def fetch_spacex():

@@ -4,7 +4,7 @@ from urllib.parse import unquote, urlsplit
 
 import requests
 
-from download_image import download_image
+from utils import download_image
 
 COUNT_APOD_IMAGES = 20
 API_EPIC_URL = 'https://api.nasa.gov/EPIC/api/natural/images?'
