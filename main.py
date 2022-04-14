@@ -3,21 +3,13 @@ import os
 import time
 from pathlib import Path
 
-import requests
 import telegram
 from dotenv import load_dotenv
 
-from fetch_nasa import fetch_nasa_APOD, fetch_nasa_EPIC
+from fetch_nasa import fetch_nasa
 from fetch_spacex import fetch_spacex
 
 IMG_FOLDER_NAME = 'images'
-
-
-def download_image(url, filename):
-    response = requests.get(url)
-    response.raise_for_status()
-    with open(Path(IMG_FOLDER_NAME) / filename, 'wb') as file:
-        file.write(response.content)
 
 
 def publish_photo(path):
@@ -37,8 +29,7 @@ def main():
     Path(IMG_FOLDER_NAME).mkdir(parents=True, exist_ok=True)
 
     fetch_spacex()
-    fetch_nasa_EPIC()
-    fetch_nasa_APOD()
+    fetch_nasa(os.environ["NASA_API_KEY"])
 
     for i in os.walk(IMG_FOLDER_NAME):
         for img in i[2]:
