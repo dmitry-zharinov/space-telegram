@@ -54,5 +54,5 @@ def fetch_nasa_apod(key):
 
 
 def fetch_nasa(key):
-    # fetch_nasa_epic(key)
+    fetch_nasa_epic(key)
     fetch_nasa_apod(key)
