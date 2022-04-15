@@ -17,7 +17,7 @@ def get_extension_from_url(url):
     return os.path.splitext(unquote(url_split.path))[1]
 
 
-def fetch_nasa_EPIC(key):
+def fetch_nasa_epic(key):
     response = requests.get(f'{API_EPIC_URL}api_key={key}')
     response.raise_for_status()
     for img_number, img in enumerate(response.json()):
@@ -30,7 +30,7 @@ def fetch_nasa_EPIC(key):
                        f'epic{img_number}.jpg')
 
 
-def fetch_nasa_APOD(key):
+def fetch_nasa_apod(key):
     response = requests.get(f'{API_APOD_URL}api_key={key}',
                             params={
                                 'count': COUNT_APOD_IMAGES,
@@ -44,5 +44,5 @@ def fetch_nasa_APOD(key):
 
 
 def fetch_nasa(key):
-    fetch_nasa_EPIC(key)
-    fetch_nasa_APOD(key)
+    fetch_nasa_epic(key)
+    fetch_nasa_apod(key)
