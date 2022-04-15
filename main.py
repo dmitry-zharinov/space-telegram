@@ -21,9 +21,10 @@ def publish_photo(path, token, chat_id):
 
 def main():
     load_dotenv()
-    logging.basicConfig(handlers=[logging.FileHandler(filename="./app.log",
-                                                      encoding='utf-8',
-                                                      mode='a+')],
+    handler = logging.FileHandler(filename="./app.log",
+                                  encoding='utf-8',
+                                  mode='a+')
+    logging.basicConfig(handlers=[handler],
                         level=logging.INFO,
                         format='%(asctime)s %(levelname)s: %(message)s',
                         datefmt='%F %A %T')
@@ -34,13 +35,13 @@ def main():
 
     telegram_token = os.environ['TG_BOT_TOKEN']
     chat_id = os.environ['TG_CHAT_ID']
-    for i in os.walk(IMG_FOLDER_NAME):
-        for img in i[2]:
-            time.sleep(int(os.environ['PHOTO_PUBLISH_PERIOD']))
-            publish_photo(os.fspath(Path(IMG_FOLDER_NAME) / img),
+    for root, dirs, files in os.walk(IMG_FOLDER_NAME):
+        for file in files:
+            publish_photo(os.fspath(Path(IMG_FOLDER_NAME) / file),
                           telegram_token,
                           chat_id)
-            logging.info(f'Опубликовано фото {img}')
+            logging.info(f'Опубликовано фото {file}')
+            time.sleep(int(os.environ['PHOTO_PUBLISH_PERIOD']))
 
 
 if __name__ == '__main__':
