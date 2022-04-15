@@ -15,13 +15,11 @@ def get_extension_from_url(url):
 
 
 def fetch_nasa_epic(key):
-    api_img_url = 'https://api.nasa.gov/EPIC/api/natural/images'
-    api_url = 'https://api.nasa.gov/EPIC/archive/natural/'
-    payload = {
-        'api_key': key,
-        'count': COUNT_APOD_IMAGES,
-    }
-    response = requests.get(api_img_url, params=payload)
+    response = requests.get('https://api.nasa.gov/EPIC/api/natural/images',
+                            params={
+                                'api_key': key,
+                                'count': COUNT_APOD_IMAGES
+                            })
     response.raise_for_status()
     for img_number, img in enumerate(response.json()):
         img_date = datetime.fromisoformat(img['date'])
@@ -29,17 +27,18 @@ def fetch_nasa_epic(key):
         month = img_date.month
         day = img_date.day
         filename = f'{img["image"]}.png'
-        img_url = f'{api_url}{year}/{month:02d}/{day:02d}/png/{filename}'
-        img_payload = {
+        url = 'https://api.nasa.gov/EPIC/archive/natural/'
+        img_url = f'{url}{year}/{month:02d}/{day:02d}/png/{filename}'
+        payload = {
             'api_key': key,
         }
         download_image(img_url,
                        f'epic{img_number}.jpg',
-                       img_payload)
+                       payload)
 
 
 def fetch_nasa_apod(key):
-    api_url = 'https://api.nasa.gov/EPIC/archive/natural/'
+    api_url = 'https://api.nasa.gov/planetary/apod'
     payload = {
         'api_key': key,
         'count': COUNT_APOD_IMAGES,
@@ -55,5 +54,5 @@ def fetch_nasa_apod(key):
 
 
 def fetch_nasa(key):
-    fetch_nasa_epic(key)
+    # fetch_nasa_epic(key)
     fetch_nasa_apod(key)
