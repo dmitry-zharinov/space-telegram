@@ -32,9 +32,11 @@ def fetch_nasa_epic(key):
         payload = {
             'api_key': key,
         }
-        download_image(img_url,
-                       f'epic{img_number}.jpg',
-                       payload)
+        download_image(
+            img_url,
+            f'epic{img_number}.jpg',
+            payload
+        )
 
 
 def fetch_nasa_apod(key):
@@ -48,9 +50,11 @@ def fetch_nasa_apod(key):
     for img_number, img in enumerate(response.json()):
         ext = get_extension_from_url(img['url'])
         if ext:
-            download_image(img['url'],
-                           f'apod{img_number}{ext}',
-                           None)
+            download_image(
+                img['url'],
+                f'apod{img_number}{ext}',
+                None
+            )
 
 
 def fetch_nasa(key):
