@@ -15,19 +15,25 @@ IMG_FOLDER_NAME = 'images'
 def publish_photo(path, token, chat_id):
     bot = telegram.Bot(token=token)
     with open(path, 'rb') as photo:
-        bot.send_document(chat_id=chat_id,
-                          document=photo)
+        bot.send_document(
+            chat_id=chat_id,
+            document=photo
+        )
 
 
 def main():
     load_dotenv()
-    handler = logging.FileHandler(filename="./app.log",
-                                  encoding='utf-8',
-                                  mode='a+')
-    logging.basicConfig(handlers=[handler],
-                        level=logging.INFO,
-                        format='%(asctime)s %(levelname)s: %(message)s',
-                        datefmt='%F %A %T')
+    handler = logging.FileHandler(
+        filename="./app.log",
+        encoding='utf-8',
+        mode='a+'
+    )
+    logging.basicConfig(
+        handlers=[handler],
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)s: %(message)s',
+        datefmt='%F %A %T'
+    )
     Path(IMG_FOLDER_NAME).mkdir(parents=True, exist_ok=True)
 
     fetch_spacex()
@@ -37,9 +43,11 @@ def main():
     chat_id = os.environ['TG_CHAT_ID']
     for root, dirs, files in os.walk(IMG_FOLDER_NAME):
         for file in files:
-            publish_photo(os.fspath(Path(IMG_FOLDER_NAME) / file),
-                          telegram_token,
-                          chat_id)
+            publish_photo(
+                os.fspath(Path(IMG_FOLDER_NAME) / file),
+                telegram_token,
+                chat_id
+            )
             logging.info(f'Опубликовано фото {file}')
             time.sleep(int(os.environ['PHOTO_PUBLISH_PERIOD']))
 
